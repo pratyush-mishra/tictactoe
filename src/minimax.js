@@ -21,16 +21,16 @@ function evaluate(squares) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        if(squares[a] == 'X')
+        if(squares[a] == 'O')
             return 10;
-        else if(squares[a] == 'O')
+        else if(squares[a] == 'X')
             return -10;
       }
     }
     return null;
 }
 
-function minimax(squares, depth, xIsNext) {
+function minimax(squares, depth, isMaximising) {
     let score = evaluate(squares);
 
     if(score == 10 ){
@@ -38,21 +38,22 @@ function minimax(squares, depth, xIsNext) {
         return score - depth;
     }
     if(score == -10) {
-        console.log(score-depth);
+        console.log(score+depth);
         return score + depth;
     }
 
     if(!isMovesLeft)
         return 0;
 
-    if(xIsNext){
+    if(isMaximising){
         let best = -Infinity;
         for(let i = 0; i< squares.length; i++) {
             if(!squares[i])
             {
-                squares[i] = 'X';
-                best = Math.max(best, minimax(squares, depth+1, !xIsNext))
+                squares[i] = 'O';
+                let score = minimax(squares, depth+1, false);
                 squares[i] = null;
+                best = Math.max(score, best);
             }
         }
 
@@ -64,9 +65,10 @@ function minimax(squares, depth, xIsNext) {
         for(let i = 0; i< squares.length; i++) {
             if(!squares[i])
             {
-                squares[i] = 'O';
-                best = Math.min(best, minimax(squares, depth+1, !xIsNext))
+                squares[i] = 'X';
+                let score = minimax(squares, depth+1, true);
                 squares[i] = null;
+                best = Math.min(score, best);
             }
         }
         return best;
@@ -74,22 +76,23 @@ function minimax(squares, depth, xIsNext) {
 }
 
 export function findBestMove(squares) {
-    let bestVal = Infinity;
+    let bestScore = -Infinity;
     let movPos = null;
+    //bestVal = minimax(squares, 0, false)
     for(let i=0; i<squares.length; i++) {
         if(!squares[i]){
             squares[i] = 'O';
-            let moveVal = minimax(squares, 0, true);
+            let moveVal = minimax(squares, 0, false);
             squares[i] = null;
-            if(moveVal < bestVal)
+            if(moveVal > bestScore)
             {
                 movPos = i;
-                bestVal = moveVal;
+                bestScore = moveVal;
             }
         }
     }
     return movPos;
-    //console.log("Best move is " + movPos + " " + bestVal);
+    //console.log(bestScore + " " + movPos);
 }
 
 

@@ -87,9 +87,9 @@ function Square(props) {
       if (winner) {
         status = 'Winner: ' + winner;
       } else {
-        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        status = 'Next player: ' + (this.state.xIsNext ? 'O' : 'X');
       }
-      if(!this.state.xIsNext) {
+      if(this.state.xIsNext) {
           this.computer();
       }
 
