@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import {findBestMove} from './minimax';
 
 function Square(props) {
     return (
@@ -59,10 +60,8 @@ function Square(props) {
             if (calculateWinner(squares)) {
                 return;
               }
-            do {
-                var random = Math.floor(Math.random() * 9);
-            } while(squares[random])
-            squares[random] = 'O';
+            let pos = findBestMove(squares);
+            squares[pos] = 'O';
             this.setState({
                 squares: squares,
                 xIsNext: !this.state.xIsNext
@@ -75,7 +74,7 @@ function Square(props) {
        if (calculateWinner(squares) || squares[i]) {
          return;
        }
-       squares[i] = this.state.xIsNext ? 'X' : 'O';
+       squares[i] = 'X';
        this.setState({
          squares: squares,
          xIsNext: !this.state.xIsNext,
