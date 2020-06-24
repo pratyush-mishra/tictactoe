@@ -34,11 +34,9 @@ function minimax(squares, depth, isMaximising) {
     let score = evaluate(squares);
 
     if(score == 10 ){
-        console.log(score-depth);
         return score - depth;
     }
     if(score == -10) {
-        console.log(score+depth);
         return score + depth;
     }
 
